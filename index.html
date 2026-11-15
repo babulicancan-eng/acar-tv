@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Acar Kuyumculuk | Canlı Fiyatlar</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:#050505;color:#f5ecd8;
+    font-family:"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;overflow:hidden;cursor:none}
+  body{display:flex;padding:3vh 2vw}
+
+  /* Sol kolon: logo, saat, gram kutuları, durum */
+  .sol{width:23vw;display:flex;flex-direction:column;justify-content:space-between;align-items:center;
+       text-align:center;border-right:1px solid #2b261c;padding-right:1.6vw;margin-right:2vw}
+  .logo{width:100%;max-height:27vh;object-fit:contain;mix-blend-mode:lighten}
+  .saat{font-size:7vh;font-weight:600;color:#f2dfa6;line-height:1;white-space:nowrap}
+  .tarih{font-size:2.3vh;color:#9a917e;margin-top:1vh}
+  .kutular{width:100%}
+  .mini{width:100%;background:#100e0b;border:1px solid #2b261c;border-top:.4vh solid #d8b35c;
+        border-radius:1vh;padding:1.2vh .8vw 1.4vh;margin-top:1.4vh;text-align:left}
+  .mini h3{font-size:2.1vh;font-weight:600;color:#d8b35c;letter-spacing:.06em}
+  .mini .iki{display:flex;margin-top:.8vh}
+  .mini .iki div{flex:1}
+  .mini small{display:block;font-size:1.6vh;color:#9a917e;letter-spacing:.1em}
+  .mini b{display:block;font-size:3.1vh;font-weight:600;white-space:nowrap}
+  .mini .iki div+div b{color:#f2dfa6}
+  .durum{font-size:2vh;color:#9a917e}
+  .nokta{display:inline-block;width:1.3vh;height:1.3vh;border-radius:50%;background:#7fbf6a;margin-right:.8vh}
+  .hata .nokta{background:#d9735b}
+
+  /* Sağ taraf: Yeni / Eski sarrafiye tabloları */
+  .sag{flex:1;display:flex;flex-direction:column;justify-content:center;min-width:0}
+  .kart{background:#100e0b;border:1px solid #2b261c;border-top:.5vh solid #d8b35c;border-radius:1vh;
+        padding:1.4vh 1.2vw 1vh;margin-bottom:2vh}
+  .kart:last-child{margin-bottom:0}
+  table{width:100%;border-collapse:collapse;table-layout:fixed}
+  th{font-weight:400;color:#9a917e;font-size:1.9vh;letter-spacing:.1em;padding:.3vh 0 .8vh;text-align:right}
+  tr.grup th{color:#d8b35c;font-weight:600;font-size:2.1vh;text-align:center;
+             border-bottom:1px solid #2b261c;padding-bottom:.4vh}
+  tr.grup th.baslik{font-size:3.8vh;font-weight:600;letter-spacing:.14em;text-align:left;border-bottom:none;vertical-align:middle;padding-left:.3vw}
+  tr.alt th{border-bottom:1px solid #d8b35c}
+  td{height:5.3vh;font-size:3vh;font-weight:600;text-align:right;border-bottom:1px solid #2b261c;white-space:nowrap}
+  td.ad{text-align:left;font-weight:400}
+  td.k{font-size:2.6vh;font-weight:400;color:#9a917e}
+  td.s{color:#f2dfa6}
+  .g{border-left:1px solid #2b261c}
+  tbody tr:last-child td{border-bottom:none}
+</style>
+</head>
+<body>
+  <div class="sol">
+    <img class="logo" src="logo.jpg" alt="Acar Kuyumculuk" onerror="this.style.display='none'">
+    <div>
+      <div class="saat" id="saat">--:--:--</div>
+      <div class="tarih" id="tarih"></div>
+    </div>
+    <div class="kutular">
+      <div class="mini">
+        <h3 id="gramBaslik">1 GR 24 AYAR</h3>
+        <div class="iki">
+          <div><small>ALIŞ</small><b id="gramAlis">—</b></div>
+          <div><small>SATIŞ</small><b id="gramSatis">—</b></div>
+        </div>
+      </div>
+      <div class="mini">
+        <h3 id="milyemBaslik">MİLYEM</h3>
+        <div class="iki">
+          <div><small>ALIŞ</small><b id="milyemAlis">—</b></div>
+          <div><small>SATIŞ</small><b id="milyemSatis">—</b></div>
+        </div>
+      </div>
+    </div>
+    <div class="durum" id="durum"><span class="nokta"></span>Bağlanıyor...</div>
+  </div>
+
+  <div class="sag">
+    <div class="kart">
+      <table>
+        <colgroup><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11.5%"><col style="width:11.5%"><col style="width:21%"><col style="width:21%"></colgroup>
+        <thead>
+          <tr class="grup"><th class="baslik" rowspan="2" style="color:#d8b35c">YENİ</th><th colspan="2">HAS</th><th colspan="2">İŞÇİLİK</th><th colspan="2">TL</th></tr>
+          <tr class="alt"><th class="g">ALIŞ</th><th>SATIŞ</th><th class="g">ALIŞ</th><th>SATIŞ</th><th class="g">ALIŞ</th><th>SATIŞ</th></tr>
+        </thead>
+        <tbody id="yeni"></tbody>
+      </table>
+    </div>
+    <div class="kart">
+      <table>
+        <colgroup><col style="width:13%"><col style="width:11%"><col style="width:11%"><col style="width:11.5%"><col style="width:11.5%"><col style="width:21%"><col style="width:21%"></colgroup>
+        <thead>
+          <tr class="grup"><th class="baslik" rowspan="2" style="color:#d8b35c">ESKİ</th><th colspan="2">HAS</th><th colspan="2">İŞÇİLİK</th><th colspan="2">TL</th></tr>
+          <tr class="alt"><th class="g">ALIŞ</th><th>SATIŞ</th><th class="g">ALIŞ</th><th>SATIŞ</th><th class="g">ALIŞ</th><th>SATIŞ</th></tr>
+        </thead>
+        <tbody id="eski"></tbody>
+      </table>
+    </div>
+  </div>
+
+<script>
+(function () {
+  // ===== AYARLAR =====
+  var YENILEME_MS = 10000;          // kaç milisaniyede bir güncellensin (10000 = 10 sn)
+  var API = "/api/fiyatlar";
+  // ===================
+
+  var URUNLER = ["Çeyrek", "Yarım", "Teklik", "Gremse", "Ata Lira", "Ata Beşli"];
+  var KAYNAK_ADI = { tl: "TL", has: "Has", iscilik: "İşçilik", milyem: "Milyem", gram: "Gram" };
+  var AYLAR = ["Ocak","Şubat","Mart","Nisan","Mayıs","Haziran","Temmuz","Ağustos","Eylül","Ekim","Kasım","Aralık"];
+  var GUNLER = ["Pazar","Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi"];
+
+  // Her kaynağın son başarılı verisi. Biri koparsa eski değer ekranda kalır.
+  var veri = { tl: null, has: null, iscilik: null, milyem: null, gram: null };
+  var sonBasarili = null;
+
+  function $(id) { return document.getElementById(id); }
+  function iki(n) { return (n < 10 ? "0" : "") + n; }
+  function saatMetni(d) { return iki(d.getHours()) + ":" + iki(d.getMinutes()) + ":" + iki(d.getSeconds()); }
+  function tarihMetni(d) { return d.getDate() + " " + AYLAR[d.getMonth()] + " " + d.getFullYear() + " " + GUNLER[d.getDay()]; }
+
+  // 10317.25 -> "10.317,25"   (tarayıcı diline bağlı değildir, eski TV'lerde de çalışır)
+  function bicim(n, basamak) {
+    if (n === null || n === undefined || !isFinite(n)) return "—";
+    var eksi = n < 0;
+    var parcalar = Math.abs(n).toFixed(basamak).split(".");
+    var tam = parcalar[0].replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    return (eksi ? "-" : "") + tam + (parcalar.length > 1 ? "," + parcalar[1] : "");
+  }
+
+  function deger(kaynak, anahtar, alan) {
+    var v = veri[kaynak];
+    return (v && v[anahtar]) ? v[anahtar][alan] : null;
+  }
+
+  function satir(anahtar, ad) {
+    return '<tr><td class="ad">' + ad + '</td>' +
+      '<td class="k g">' + bicim(deger("has", anahtar, "alis"), 4) + '</td>' +
+      '<td class="k">' + bicim(deger("has", anahtar, "satis"), 4) + '</td>' +
+      '<td class="k g">' + bicim(deger("iscilik", anahtar, "alis"), 2) + '</td>' +
+      '<td class="k">' + bicim(deger("iscilik", anahtar, "satis"), 2) + '</td>' +
+      '<td class="g">' + bicim(deger("tl", anahtar, "alis"), 2) + '</td>' +
+      '<td class="s">' + bicim(deger("tl", anahtar, "satis"), 2) + '</td></tr>';
+  }
+
+  function tabloCiz() {
+    var yeni = "", eski = "";
+    for (var i = 0; i < URUNLER.length; i++) {
+      yeni += satir("stl" + (2 * i + 1), URUNLER[i]);   // Yeni: stl1, stl3, ...
+      eski += satir("stl" + (2 * i + 2), URUNLER[i]);   // Eski: stl2, stl4, ...
+    }
+    $("yeni").innerHTML = yeni;
+    $("eski").innerHTML = eski;
+  }
+
+  function kutuCiz() {
+    var g = veri.gram, m = veri.milyem;
+    $("gramBaslik").textContent = g && g.kod ? g.kod : "1 GR 24 AYAR";
+    $("gramAlis").textContent = bicim(g ? g.alis : null, 2);
+    $("gramSatis").textContent = bicim(g ? g.satis : null, 2);
+    $("milyemBaslik").textContent = "MİLYEM" + (m && m.kod ? "  " + m.kod : "");
+    $("milyemAlis").textContent = bicim(m ? m.alis : null, 1);
+    $("milyemSatis").textContent = bicim(m ? m.satis : null, 1);
+  }
+
+  function saatYaz() {
+    var d = new Date();
+    $("saat").textContent = saatMetni(d);
+    $("tarih").textContent = tarihMetni(d);
+  }
+
+  function durumYaz(eksik) {
+    var govde = document.body;
+    var metin;
+    if (!eksik.length) {
+      sonBasarili = new Date();
+      govde.className = "";
+      metin = "Canlı · son güncelleme " + saatMetni(sonBasarili);
+    } else {
+      govde.className = "hata";
+      metin = (eksik.length === 5 ? "Bağlantı yok" : "Eksik veri: " + eksik.join(", ")) +
+              (sonBasarili ? " · son güncelleme " + saatMetni(sonBasarili) : "");
+    }
+    $("durum").innerHTML = '<span class="nokta"></span>' + metin;
+  }
+
+  function getir(url, tamam, hata) {
+    var x = new XMLHttpRequest();
+    x.open("GET", url, true);
+    x.timeout = 8000;
+    x.onload = function () {
+      if (x.status >= 200 && x.status < 300) {
+        try { tamam(JSON.parse(x.responseText)); } catch (e) { hata(); }
+      } else { hata(); }
+    };
+    x.onerror = hata;
+    x.ontimeout = hata;
+    x.send();
+  }
+
+  function guncelle() {
+    getir(API, function (j) {
+      var eksik = [];
+      for (var k in veri) {
+        if (j.kaynaklar && j.kaynaklar[k] && j.kaynaklar[k].ok) veri[k] = j.kaynaklar[k].veri;
+        else eksik.push(KAYNAK_ADI[k]);
+      }
+      tabloCiz(); kutuCiz(); durumYaz(eksik);
+    }, function () {
+      durumYaz(["TL", "Has", "İşçilik", "Milyem", "Gram"]);   // hepsi koptu, eski değerler ekranda kalır
+    });
+  }
+
+  saatYaz(); tabloCiz(); kutuCiz(); guncelle();
+  setInterval(saatYaz, 1000);
+  setInterval(guncelle, YENILEME_MS);
+})();
+</script>
+</body>
+</html>
